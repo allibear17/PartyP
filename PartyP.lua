@@ -94,16 +94,25 @@ config.register(settings, function(settings_table)
 	p5_settings.text = {}
 	p5_settings.text.size = nondefault.font_size
 	
-	pt0 = texts.new(' HP: ${hpp|---}%', p0_settings)
-	pt1 = texts.new(' HP: ${hpp|---}%', p1_settings)
-	pt2 = texts.new(' HP: ${hpp|---}%', p2_settings)
-	pt3 = texts.new(' HP: ${hpp|---}%', p3_settings)
-	pt4 = texts.new(' HP: ${hpp|---}%', p4_settings)
-	pt5 = texts.new(' HP: ${hpp|---}%', p5_settings)
+	pet_settings = {}
+	pet_settings.pos = {}
+	pet_settings.pos.x = nondefault.pos.x + (nondefault.step*6)
+	pet_settings.pos.y = nondefault.pos.y - 15
+	pet_settings.text = {}
+	pet_settings.text.size = nondefault.font_size
+	
+	pt0 = texts.new(' P0: ${hpp|---}%', p0_settings)
+	pt1 = texts.new(' P1: ${hpp|---}%', p1_settings)
+	pt2 = texts.new(' P2: ${hpp|---}%', p2_settings)
+	pt3 = texts.new(' P3: ${hpp|---}%', p3_settings)
+	pt4 = texts.new(' P4: ${hpp|---}%', p4_settings)
+	pt5 = texts.new(' P5: ${hpp|---}%', p5_settings)
+	p0pet = texts.new(' Pet: ${hpp|---}%', pet_settings)
 end)
 
 function Update()
 	local party = windower.ffxi.get_party()
+	local mypet = windower.ffxi.get_mob_by_target('pet')
 	if (party.p0 ~= nil) then
 		pt0.hpp = party.p0.hpp
 		pt0:show()
@@ -139,6 +148,12 @@ function Update()
 		pt5:show()
 	else
 		pt5:hide()
+	end
+	if mypet ~= nil then
+		p0pet.hpp = mypet.hpp
+		p0pet:show()
+	else
+		p0pet:hide()
 	end
 end
 
