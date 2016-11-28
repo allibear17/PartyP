@@ -8,6 +8,7 @@ Huge Thanks to Iryoku for helping me condense the coding and teaching me a bit o
 
 Current Screenshot available here:
 http://orig04.deviantart.net/4325/f/2016/333/4/8/custom_ffxi_windower_addon_by_allibear17-daq12lc.jpg
+Screenshot taken on 1600x900 at 1.5 ui scale.
 
 List of Settings.xml variables and what they control:
 <font_size>,  controls the font_size of the displays
