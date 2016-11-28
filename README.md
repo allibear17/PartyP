@@ -6,6 +6,9 @@ Cliff author of TParty, and sdahlka on the windower forums.  Looking at the
 coding of their various pieces really helped me piece this together.
 Huge Thanks to Iryoku for helping me condense the coding and teaching me a bit of lua.
 
+Current Screenshot available here:
+http://orig04.deviantart.net/4325/f/2016/333/4/8/custom_ffxi_windower_addon_by_allibear17-daq12lc.jpg
+
 List of Settings.xml variables and what they control:
 <font_size>,  controls the font_size of the displays
 <pet> Has an X, and Y to control where the pet HP% displays shows.
