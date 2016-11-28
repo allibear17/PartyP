@@ -3,7 +3,8 @@ This is an addon for Windower that displays Party HP% and MP% horizontally acros
 
 Special Thanks to Mike McKee author of Enemybar, Morath86 author of barfiller, 
 Cliff author of TParty, and sdahlka on the windower forums.  Looking at the 
-coding of their various pieces really helped me piece this together
+coding of their various pieces really helped me piece this together.
+Huge Thanks to Iryoku for helping me condense the coding and teaching me a bit of lua.
 
 List of Settings.xml variables and what they control:
 <font_size>,  controls the font_size of the displays
