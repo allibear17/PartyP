@@ -27,11 +27,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Special Thanks to Mike McKee author of Enemybar, Morath86 author of barfiller, 
 Cliff author of TParty, and sdahlka on the windower forums.  Looking at the 
 coding of their various pieces really helped me piece this together
+
+Huge Thanks to Iryoku for helping me condense the coding and teaching me a bit of lua
 ]]
 
 _addon.name = 'PartyP'
 _addon.author = 'Allison Jane'
-_addon.version = '0.1b'
+_addon.version = '0.2'
 _addon.language = 'english'
 
 texts = require('texts')
@@ -39,9 +41,14 @@ config = require('config')
 
 defaults = T{}
 defaults.pos = {}
-defaults.pos.x = 300
-defaults.pos.y = 480
-defaults.step = 90
+defaults.pos.x = 200
+defaults.pos.y = 100
+defaults.step = {}
+defaults.step.x = 90
+defaults.step.y = 20
+defaults.pet = {}
+defaults.pet.x = 840
+defaults.pet.y = 440
 defaults.font_size = 12
 
 settings = config.load(defaults)
@@ -52,103 +59,87 @@ config.register(settings, function(settings_table)
 	if settings_table.pos.x ~= nil then
 		nondefault = settings_table
 	end
-	p0_settings = {}
-	p0_settings.pos = {}
-	p0_settings.pos.x = nondefault.pos.x
-	p0_settings.pos.y = nondefault.pos.y
-	p0_settings.text = {}
-	p0_settings.text.size = nondefault.font_size
-
-	p1_settings = {}	
-	p1_settings.pos = {}
-	p1_settings.pos.x = nondefault.pos.x + nondefault.step
-	p1_settings.pos.y = nondefault.pos.y
-	p1_settings.text = {}
-	p1_settings.text.size = nondefault.font_size
-
-	p2_settings = {}
-	p2_settings.pos = {}
-	p2_settings.pos.x = nondefault.pos.x + (nondefault.step*2)
-	p2_settings.pos.y = nondefault.pos.y
-	p2_settings.text = {}
-	p2_settings.text.size = nondefault.font_size
 	
-	p3_settings = {}
-	p3_settings.pos = {}
-	p3_settings.pos.x = nondefault.pos.x + (nondefault.step*3)
-	p3_settings.pos.y = nondefault.pos.y
-	p3_settings.text = {}
-	p3_settings.text.size = nondefault.font_size
+	hp_settings = {}
+	hp_display = {}
+	mp_settings = {}
+	mp_display = {}
 	
-	p4_settings = {}
-	p4_settings.pos = {}
-	p4_settings.pos.x = nondefault.pos.x + (nondefault.step*4)
-	p4_settings.pos.y = nondefault.pos.y
-	p4_settings.text = {}
-	p4_settings.text.size = nondefault.font_size
+	for i = 0, 5 do
+		hp_settings[i] = {pos = {x = nondefault.pos.x + (nondefault.step.x * i), y = nondefault.pos.y}, text = {size = nondefault.font_size}}
+		hp_display[i] = texts.new('HP: ${hpp|---}%', hp_settings[i])
+		mp_settings[i] = {pos = {x = nondefault.pos.x + (nondefault.step.x * i), y = nondefault.pos.y + nondefault.step.y}, text = {size = nondefault.font_size}}
+		mp_display[i] = texts.new('MP: ${mpp|---}%', mp_settings[i])
+	end
 	
-	p5_settings = {}
-	p5_settings.pos = {}
-	p5_settings.pos.x = nondefault.pos.x + (nondefault.step*5)
-	p5_settings.pos.y = nondefault.pos.y
-	p5_settings.text = {}
-	p5_settings.text.size = nondefault.font_size
-	
-	pet_settings = {}
-	pet_settings.pos = {}
-	pet_settings.pos.x = nondefault.pos.x + (nondefault.step*6)
-	pet_settings.pos.y = nondefault.pos.y - 15
-	pet_settings.text = {}
-	pet_settings.text.size = nondefault.font_size
-	
-	pt0 = texts.new(' P0: ${hpp|---}%', p0_settings)
-	pt1 = texts.new(' P1: ${hpp|---}%', p1_settings)
-	pt2 = texts.new(' P2: ${hpp|---}%', p2_settings)
-	pt3 = texts.new(' P3: ${hpp|---}%', p3_settings)
-	pt4 = texts.new(' P4: ${hpp|---}%', p4_settings)
-	pt5 = texts.new(' P5: ${hpp|---}%', p5_settings)
+	pet_settings = {pos = {x = nondefault.pet.x, y = nondefault.pet.y}, text = {size = nondefault.font_size}}
 	p0pet = texts.new(' Pet: ${hpp|---}%', pet_settings)
 end)
 
 function Update()
 	local party = windower.ffxi.get_party()
 	local mypet = windower.ffxi.get_mob_by_target('pet')
+	
 	if (party.p0 ~= nil) then
-		pt0.hpp = party.p0.hpp
-		pt0:show()
+		hp_display[0].hpp = party.p0.hpp
+		mp_display[0].mpp = party.p0.mpp
+		hp_display[0]:show()
+		mp_display[0]:show()
 	else
-		pt0:hide()
+		hp_display[0]:hide()
+		mp_display[0]:hide()
 	end
+
 	if (party.p1 ~= nil) then
-		pt1.hpp = party.p1.hpp
-		pt1:show()
+		hp_display[1].hpp = party.p1.hpp
+		mp_display[1].mpp = party.p1.mpp
+		hp_display[1]:show()
+		mp_display[1]:show()
 	else
-		pt1:hide()
+		hp_display[1]:hide()
+		mp_display[1]:hide()
 	end
+	
 	if (party.p2 ~= nil) then
-		pt2.hpp = party.p2.hpp
-		pt2:show()
+		hp_display[2].hpp = party.p2.hpp
+		mp_display[2].mpp = party.p2.mpp
+		hp_display[2]:show()
+		mp_display[2]:show()
 	else
-		pt2:hide()
+		hp_display[2]:hide()
+		mp_display[2]:hide()
 	end
+	
 	if (party.p3 ~= nil) then
-		pt3.hpp = party.p3.hpp
-		pt3:show()
+		hp_display[3].hpp = party.p3.hpp
+		mp_display[3].mpp = party.p3.mpp
+		hp_display[3]:show()
+		mp_display[3]:show()
 	else
-		pt3:hide()
+		hp_display[3]:hide()
+		mp_display[3]:hide()
 	end
+
 	if (party.p4 ~= nil) then
-		pt4.hpp = party.p4.hpp
-		pt4:show()
+		hp_display[4].hpp = party.p4.hpp
+		mp_display[4].mpp = party.p4.mpp
+		hp_display[4]:show()
+		mp_display[4]:show()
 	else
-		pt4:hide()
+		hp_display[4]:hide()
+		mp_display[4]:hide()
 	end
+
 	if (party.p5 ~= nil) then
-		pt5.hpp = party.p5.hpp
-		pt5:show()
+		hp_display[5].hpp = party.p5.hpp
+		mp_display[5].mpp = party.p5.mpp
+		hp_display[5]:show()
+		mp_display[5]:show()
 	else
-		pt5:hide()
+		hp_display[5]:hide()
+		mp_display[5]:hide()
 	end
+
 	if mypet ~= nil then
 		p0pet.hpp = mypet.hpp
 		p0pet:show()
