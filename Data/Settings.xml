@@ -1,11 +1,21 @@
 <?xml version="1.1" ?>
 <settings>
     <global>
+        <font_size>12</font_size>
+        <pet>
+        <!-- Position for Pet HP% Display -->
+            <x>840</x>
+            <y>440</y>
+        </pet>
         <pos>
-            <x>300</x>
-            <y>480</y>
+        <!-- Sets X, and Y position of player stats on screen -->
+            <x>382</x>
+            <y>442</y>
         </pos>
-		<step>90</step>
-    <font_size>12</font_size>
+        <step>
+        <!-- Step X controls spacing between each party member, Step Y controls spacing the HP and MP of one member -->
+            <x>80</x>
+            <y>20</y>
+        </step>
     </global>
 </settings>
