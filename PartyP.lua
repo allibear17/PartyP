@@ -25,15 +25,13 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Special Thanks to Mike McKee author of Enemybar, Morath86 author of barfiller, 
-Cliff author of TParty, and sdahlka on the windower forums.  Looking at the 
-coding of their various pieces really helped me piece this together
-
-Huge Thanks to Iryoku for helping me condense the coding and teaching me a bit of lua
+Cliff author of TParty, and sdahlka and Iryoku on the windower forums, looking at the 
+coding of their various pieces really helped me piece this together.  
 ]]
 
 _addon.name = 'PartyP'
 _addon.author = 'Allison Jane'
-_addon.version = '0.2'
+_addon.version = '0.3'
 _addon.language = 'english'
 
 texts = require('texts')
@@ -80,65 +78,17 @@ function Update()
 	local party = windower.ffxi.get_party()
 	local mypet = windower.ffxi.get_mob_by_target('pet')
 	
-	if (party.p0 ~= nil) then
-		hp_display[0].hpp = party.p0.hpp
-		mp_display[0].mpp = party.p0.mpp
-		hp_display[0]:show()
-		mp_display[0]:show()
-	else
-		hp_display[0]:hide()
-		mp_display[0]:hide()
-	end
-
-	if (party.p1 ~= nil) then
-		hp_display[1].hpp = party.p1.hpp
-		mp_display[1].mpp = party.p1.mpp
-		hp_display[1]:show()
-		mp_display[1]:show()
-	else
-		hp_display[1]:hide()
-		mp_display[1]:hide()
-	end
-	
-	if (party.p2 ~= nil) then
-		hp_display[2].hpp = party.p2.hpp
-		mp_display[2].mpp = party.p2.mpp
-		hp_display[2]:show()
-		mp_display[2]:show()
-	else
-		hp_display[2]:hide()
-		mp_display[2]:hide()
-	end
-	
-	if (party.p3 ~= nil) then
-		hp_display[3].hpp = party.p3.hpp
-		mp_display[3].mpp = party.p3.mpp
-		hp_display[3]:show()
-		mp_display[3]:show()
-	else
-		hp_display[3]:hide()
-		mp_display[3]:hide()
-	end
-
-	if (party.p4 ~= nil) then
-		hp_display[4].hpp = party.p4.hpp
-		mp_display[4].mpp = party.p4.mpp
-		hp_display[4]:show()
-		mp_display[4]:show()
-	else
-		hp_display[4]:hide()
-		mp_display[4]:hide()
-	end
-
-	if (party.p5 ~= nil) then
-		hp_display[5].hpp = party.p5.hpp
-		mp_display[5].mpp = party.p5.mpp
-		hp_display[5]:show()
-		mp_display[5]:show()
-	else
-		hp_display[5]:hide()
-		mp_display[5]:hide()
-	end
+    for i = 0, 5 do
+        if party["p"..i] ~= nil then
+            hp_display[i].hpp = party['p'..i].hpp
+            mp_display[i].mpp = party['p'..i].mpp
+            hp_display[i]:show()
+            mp_display[i]:show()
+        else
+            hp_display[i]:hide()
+            mp_display[i]:hide()
+        end
+    end
 
 	if mypet ~= nil then
 		p0pet.hpp = mypet.hpp
@@ -148,4 +98,14 @@ function Update()
 	end
 end
 
-windower.register_event('prerender', Update)
+-- Thanks sdahlka for the for the following code
+frame_count = 0
+windower.register_event('prerender',function()
+    if not windower.ffxi.get_info().logged_in then -- stops prerender if not logged in yet
+        return
+    end
+    if frame_count%30 == 0 and windower.ffxi.get_info().logged_in then
+        Update()
+    end
+    frame_count = frame_count + 1
+end)
