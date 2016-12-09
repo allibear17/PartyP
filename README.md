@@ -20,6 +20,9 @@ List of Settings.xml variables and what they control:
        Y controls the distance vertically between each member's HP and MP displays.
 
 Changelog 
+v0.3
+- Altered code to run every 30th frame, instead of every frame.
+
 v0.2
 - Changed variable names to be more clear
 - Reworked some of the code (Thanks Iryoku)
